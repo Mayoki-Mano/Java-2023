@@ -175,8 +175,7 @@ public interface InteractiveMode {
                             }
                         }
 
-                        if (service.findInDir(id) instanceof Student){
-                            Student student = (Student) service.findInDir(id);
+                        if (service.findInDir(id) instanceof Student student){
                             if (student==null){
                                 break;
                             }
