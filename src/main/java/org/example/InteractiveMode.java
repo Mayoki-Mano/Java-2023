@@ -46,8 +46,12 @@ public interface InteractiveMode {
                         if (scanner.hasNextLine()) {
                             try {
                                 birthYear = Integer.parseInt(scanner.nextLine());
+                                if (birthYear<0){
+                                    throw new NumberFormatException();
+                                }
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.createSaveStudent(fullName, birthYear, "+7987231312", subjects);
@@ -64,8 +68,12 @@ public interface InteractiveMode {
                         if (scanner.hasNextLine()) {
                             try {
                                 birthYear = Integer.parseInt(scanner.nextLine());
+                                if (birthYear<0){
+                                    throw new NumberFormatException();
+                                }
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.createSaveTeacher(fullName, birthYear, "+7987231321", MATH, 8);
@@ -79,6 +87,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.deletePeople(id);
@@ -92,6 +101,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.deleteInDir(id);
@@ -105,6 +115,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         String fullName = null;
@@ -117,8 +128,12 @@ public interface InteractiveMode {
                         if (scanner.hasNextLine()) {
                             try {
                                 birthYear = Integer.parseInt(scanner.nextLine());
+                                if (birthYear<0){
+                                    throw new NumberFormatException();
+                                }
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.updatePerson(new Teacher(fullName, birthYear, "+7987752321", ART, 14), id);
@@ -132,6 +147,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         String fullName = null;
@@ -144,8 +160,12 @@ public interface InteractiveMode {
                         if (scanner.hasNextLine()) {
                             try {
                                 birthYear = Integer.parseInt(scanner.nextLine());
+                                if (birthYear<0){
+                                    throw new NumberFormatException();
+                                }
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.updateInDir(new Teacher(fullName, birthYear, "+7987752321", ART, 14), id);
@@ -159,6 +179,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
                         service.printPerson(service.map.get(id));
@@ -172,6 +193,7 @@ public interface InteractiveMode {
                                 id = Integer.parseInt(scanner.nextLine());
                             } catch (NumberFormatException e) {
                                 System.out.println("Wrong number parameter");
+                                break;
                             }
                         }
 
@@ -202,7 +224,7 @@ public interface InteractiveMode {
                     }
                 }
             }catch (IOException e){
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
 
         }

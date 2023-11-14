@@ -1,6 +1,5 @@
 package org.example;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Queue;
 
@@ -36,7 +35,7 @@ public class Dispatcher implements Runnable {
                 Thread.currentThread().interrupt();
                 break;
             } catch (IOException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         }
     }

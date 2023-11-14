@@ -2,11 +2,12 @@ package org.example;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.nio.file.AccessDeniedException;
-import java.nio.file.Files;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.InvalidPropertiesFormatException;
 import java.util.Map;
@@ -17,6 +18,14 @@ public class CachePeopleDAO implements DAO {
     private final String directory;
 
     public CachePeopleDAO(String directory) {
+        try {
+            Path path = Paths.get(directory);
+            if (!Files.exists(path)) {
+                Files.createDirectories(path);
+            }
+        } catch (Exception e) {
+            System.out.println("Ошибка при создании папки: " + e.getMessage());
+        }
         this.objectMapper = new ObjectMapper();
         this.map = new HashMap<>();
         this.directory = directory;
@@ -35,7 +44,7 @@ public class CachePeopleDAO implements DAO {
                 throw new InvalidPropertiesFormatException("Wrong Id");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -56,7 +65,7 @@ public class CachePeopleDAO implements DAO {
                 throw new IOException("Wrong directory parameter");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
     }
 
@@ -79,7 +88,7 @@ public class CachePeopleDAO implements DAO {
                 throw new IOException("Wrong directory parameter");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
 
     }
@@ -101,7 +110,7 @@ public class CachePeopleDAO implements DAO {
                 throw new IOException("Wrong directory parameter");
             }
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
         }
         return null;
     }
