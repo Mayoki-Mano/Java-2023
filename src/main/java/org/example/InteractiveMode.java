@@ -36,7 +36,7 @@ public interface InteractiveMode {
                 int choice = menu(scanner);
                 switch (choice) {
                     case 1: {
-                        String fullName = null;
+                        String fullName = "";
                         int birthYear = 0;
                         System.out.println("Enter FullName: ");
                         if (scanner.hasNextLine()) {
@@ -58,7 +58,7 @@ public interface InteractiveMode {
                         break;
                     }
                     case 2: {
-                        String fullName = null;
+                        String fullName = "";
                         int birthYear = 0;
                         System.out.println("Enter FullName: ");
                         if (scanner.hasNextLine()) {
@@ -118,7 +118,7 @@ public interface InteractiveMode {
                                 break;
                             }
                         }
-                        String fullName = null;
+                        String fullName = "";
                         int birthYear = 0;
                         System.out.println("Enter FullName: ");
                         if (scanner.hasNextLine()) {
@@ -150,8 +150,12 @@ public interface InteractiveMode {
                                 break;
                             }
                         }
-                        String fullName = null;
+                        if (!service.peopleInDirExists(id)){
+                            break;
+                        }
+                        String fullName = "";
                         int birthYear = 0;
+                        String phoneNumber="";
                         System.out.println("Enter FullName: ");
                         if (scanner.hasNextLine()) {
                             fullName = scanner.nextLine();
@@ -168,7 +172,44 @@ public interface InteractiveMode {
                                 break;
                             }
                         }
-                        service.updateInDir(new Teacher(fullName, birthYear, "+7987752321", ART, 14), id);
+                        System.out.println("Enter PhoneNumber: ");
+                        if (scanner.hasNextLine()) {
+                            phoneNumber = scanner.nextLine();
+                        }
+                        if (!phoneNumber.matches("^\\+[1-9]\\d{10}$")){
+                            System.out.println("Wrong phone parameters");
+                            break;
+                        }
+                        if (service.findInDir(id) instanceof Student){
+                            System.out.println("Student parameters:");
+                            Subject[] subjects1= Subject.getSubjectsFromInput(scanner);
+                            if (subjects1==null){
+                                break;
+                            }
+                            service.updateInDir(new Student(fullName, birthYear, phoneNumber, subjects1), id);
+                        }else{
+                            System.out.println("Teacher parameters:");
+                            Subject subject= Subject.getSubjectFromInput(scanner);
+                            if (subject==null){
+                                break;
+                            }
+                            System.out.println("Enter working hours:");
+                            String input = "";
+                            if (scanner.hasNextLine()) {
+                                input = scanner.nextLine();
+                            }
+                            int workingHours = -1;
+                            try {
+                                workingHours = Integer.parseInt(input);
+                                if (workingHours>24 || workingHours<0){
+                                    throw new NumberFormatException("Wrong number parameter");
+                                }
+                            }catch (NumberFormatException e){
+                                System.err.println(e.getMessage());
+                                break;
+                            }
+                            service.updateInDir(new Teacher(fullName, birthYear, phoneNumber, subject, workingHours), id);
+                        }
                         break;
                     }
                     case 7: {
@@ -196,7 +237,9 @@ public interface InteractiveMode {
                                 break;
                             }
                         }
-
+                        if (service.findInDir(id)==null){
+                            break;
+                        }
                         if (service.findInDir(id) instanceof Student){
                             Student student = (Student) service.findInDir(id);
                             if (student==null){

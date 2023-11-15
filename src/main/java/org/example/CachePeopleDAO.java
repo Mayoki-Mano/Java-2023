@@ -79,7 +79,11 @@ public class CachePeopleDAO implements DAO {
                     if (!file.delete()) {
                         throw new AccessDeniedException("File deleting error");
                     }
-                    map.replace(id, person);
+                    if (map.containsKey(id)){
+                        map.replace(id, person);
+                    }else{
+                        map.put(id, person);
+                    }
                     createInDir(id);
                 } else {
                     throw new IOException("Wrong file parameters");
@@ -92,7 +96,29 @@ public class CachePeopleDAO implements DAO {
         }
 
     }
-
+    public boolean peopleInDirExists(int id){
+        try {
+            final var path = Path.of(directory);
+            if (Files.exists(path) && Files.isDirectory(path)) {
+                try {
+                    objectMapper.readValue(new File(directory + id + ".json"), Student.class);
+                    return true;
+                } catch (IOException e) {
+                    try {
+                        objectMapper.readValue(new File(directory + id + ".json"), Teacher.class);
+                        return true;
+                    } catch (IOException ex) {
+                        throw new IOException("No such id in dir");
+                    }
+                }
+            } else {
+                throw new IOException("Wrong directory parameter");
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
     public Person findInDir(int id) {
         try {
             final var path = Path.of(directory);
