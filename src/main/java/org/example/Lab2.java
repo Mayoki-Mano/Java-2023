@@ -20,7 +20,7 @@ public class Lab2 {
         Thread thread2 = new Thread(dispatcher);
         thread2.start();
         try {
-            interactiveMode(service, subjects);
+            interactiveMode(service);
             thread1.interrupt();
             thread2.interrupt();
         } catch (IOException e) {
