@@ -37,21 +37,19 @@ public enum Subject {
         System.out.println("3 - LITERATURE");
         System.out.println("4 - ART");
 
-        // Считываем строку
         String input="";
         if (scanner.hasNextLine()) {
             input = scanner.nextLine();
         }
         Subject[] subjectsArray = null;
-        // Проверяем, что строка состоит только из допустимых чисел и пробелов
+
         if (input.matches("^[0-4]+(\\s+[0-4]+)*$")) {
-            // Разбиваем строку на массив строк по пробелам
+
             String[] inputArray = input.split("\\s+");
 
-            // Создаем массив для хранения значений перечисления
+
             subjectsArray = new Subject[inputArray.length];
 
-            // Преобразуем каждую строку в значение перечисления
             try {
                 for (int i = 0; i < inputArray.length; i++) {
                     int subjectIndex = Integer.parseInt(inputArray[i]);
@@ -61,7 +59,6 @@ public enum Subject {
                 System.err.println(e.getMessage());
             }
 
-            // Выводим введенные значения перечисления
             System.out.println("Выбранные предметы:");
             for (Subject subject : subjectsArray) {
                 System.out.println(subject);
