@@ -25,13 +25,15 @@ public class UserDetailsServlet extends HttpServlet {
                 int number = Integer.parseInt(numberString);
                 Cache<Integer, User> idUserCache = (Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
                 Map<Integer, User> users = idUserCache.asMap();
-                response.setContentType("text/html");;
+                response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
                 out.println("<html><body>");
                 out.println("<h1>USER №"+number+":</h1>");
                 User user = users.get(number);
-                response.getWriter().println("<p>User ID: " + number + ", Name: " + user.getUsername()+"<p>");
-                response.getWriter().println("<p>Email: "+user.getEmail()+"<p>");
+                out.println("<p>User ID: " + number + ", Name: " + user.getUsername()+"<p>");
+                out.println("<p>Email: "+user.getEmail()+"<p>");
+                out.println("<p><a href=\""+request.getContextPath()+"/updateUser/"+user.getId()+"\">Update person</a></p>");
+                out.println("<p><a href=\""+request.getContextPath()+"\">Home page</a></p>");
                 out.println("</body></html>");
             } catch (NumberFormatException e) {
                 response.getWriter().println("Invalid number format");

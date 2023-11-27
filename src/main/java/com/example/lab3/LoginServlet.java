@@ -54,14 +54,11 @@ public class LoginServlet extends HttpServlet {
         // Проверка учетных данных
         if (isValidCredentials(username, password)) {
             // Авторизация успешна, перенаправление на защищенную страницу
-            HttpSession session = request.getSession(true);
             Cache<String, Integer> idNameCache= (Cache<String, Integer>) getServletContext().getAttribute("idNameCache");
+            Cache<Integer, User> idUserCache=(Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
             int userId=idNameCache.get(username,k-> -1);
-            session.setAttribute("userid", userId);
-
-            Cookie userCookie = new Cookie("userid", String.valueOf(userId));
-            userCookie.setMaxAge(24 * 60 * 60);
-            response.addCookie(userCookie);
+            User user= idUserCache.get(userId, k-> null);
+            CookieUtils.saveObjectToCookie(user,24*60*60,"currentUser",response);
             response.sendRedirect(request.getContextPath() +"/users/"+userId);
         } else {
             response.sendRedirect(request.getContextPath() +"/login?error=true");

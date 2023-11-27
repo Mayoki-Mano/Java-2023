@@ -1,6 +1,7 @@
 package com.example.lab3;
 
 import java.io.*;
+import java.util.Map;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -38,30 +39,22 @@ public class RegistrationServlet extends HttpServlet {
         }
         // Получение параметров из POST-запроса
         String username = request.getParameter("username");
-        String email = request.getParameter("password");
-        String password = request.getParameter("email");
-        int id = idUserCache.asMap().size() + 1;
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        Map<Integer,User> idUserMap=idUserCache.asMap();
+        int id = 0;
+        while (idUserMap.containsKey(id)){
+            ++id;
+        }
         User newUser = new User();
+        newUser.setId(id);
         newUser.setUsername(username);
         newUser.setEmail(email);
         newUser.setPassword(password);
         idUserCache.put(id,newUser);
         idNameCache.put(username,id);
         response.setStatus(HttpServletResponse.SC_CREATED);
-
-        // Создание сессии
-        HttpSession session = request.getSession(true);
-        // Установка атрибута с идентификатором пользователя в сессии
-        session.setAttribute("userid", id);
-
-        // Создание cookie с идентификатором пользователя
-        Cookie userCookie = new Cookie("userid", String.valueOf(id));
-        // Установка времени жизни cookie (например, 1 день)
-        userCookie.setMaxAge(24 * 60 * 60);
-        // Добавление cookie в ответ
-        response.addCookie(userCookie);
-
-        // Редирект на страницу /users/userid
+        CookieUtils.saveObjectToCookie(newUser,24*60*60,"currentUser",response);
         response.sendRedirect(request.getContextPath() + "/users/" + id);
     }
 
