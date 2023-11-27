@@ -1,5 +1,7 @@
 package com.example.lab3;
 
+import java.util.Objects;
+
 public class User {
     private int id;
     private String username;
@@ -37,5 +39,12 @@ public class User {
     public String getPassword() {
         return password;
     }
-
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        User user = (User) obj;
+        return id == user.id && Objects.equals(username, user.username) &&
+                Objects.equals(email, user.email) && Objects.equals(password, user.password);
+    }
 }

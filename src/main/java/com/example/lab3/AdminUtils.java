@@ -1,6 +1,8 @@
 package com.example.lab3;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.benmanes.caffeine.cache.Cache;
+import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -14,6 +16,10 @@ public interface AdminUtils {
             }
         }
         return isAdmin;
+    }
+    static boolean adminExists(ServletContext context) {
+        Cache<String, Integer> idNameCache = (Cache<String, Integer>) context.getAttribute("idNameCache");
+        return idNameCache.get("admin", k->-1)!=-1;
     }
 
 }

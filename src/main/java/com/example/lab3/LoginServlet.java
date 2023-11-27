@@ -58,6 +58,7 @@ public class LoginServlet extends HttpServlet {
             Cache<Integer, User> idUserCache=(Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
             int userId=idNameCache.get(username,k-> -1);
             User user= idUserCache.get(userId, k-> null);
+            CookieUtils.deleteUserCookies(request,response);
             CookieUtils.saveObjectToCookie(user,24*60*60,"currentUser",response);
             response.sendRedirect(request.getContextPath() +"/users/"+userId);
         } else {

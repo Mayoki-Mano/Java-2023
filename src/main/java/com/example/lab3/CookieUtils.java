@@ -9,6 +9,7 @@ public interface CookieUtils {
     static void saveObjectToCookie(Object obj, int maxAgeInSeconds, String cookieName, HttpServletResponse response) throws JsonProcessingException {
         String encodedJson = Base64.encodeBase64URLSafeString(DAO.objectToJson(obj).getBytes());
         Cookie cookie = new Cookie(cookieName, encodedJson);
+        cookie.setPath("/");
         cookie.setMaxAge(maxAgeInSeconds); // Время жизни куки в секундах
         response.addCookie(cookie);
     }

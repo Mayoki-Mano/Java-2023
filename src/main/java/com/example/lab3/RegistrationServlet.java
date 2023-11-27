@@ -39,6 +39,10 @@ public class RegistrationServlet extends HttpServlet {
         }
         // Получение параметров из POST-запроса
         String username = request.getParameter("username");
+        if (username.equals("admin") && idNameCache.get("admin",k->null)!=null){
+            response.getWriter().println("Admin already exists");
+            return;
+        }
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         Map<Integer,User> idUserMap=idUserCache.asMap();

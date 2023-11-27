@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Objects;
 
 @WebServlet(value = "/updateUser/*")
 public class UpdateUserServlet extends HttpServlet {
@@ -25,7 +26,12 @@ public class UpdateUserServlet extends HttpServlet {
                 Cache<Integer, User> idUserCache = (Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
                 User user = idUserCache.get(userId,k->null);
                 if (user != null) {
-                    displayUser(response.getWriter(), user, request);
+                    User cookieUser=CookieUtils.getObjectFromCookie(request,"currentUser",User.class);
+                    if (Objects.equals(user,cookieUser) || Objects.equals(Objects.requireNonNull(cookieUser).getUsername(), "admin")){
+                        displayUser(response.getWriter(), user, request);
+                    }else{
+                        response.getWriter().println("No permissions");
+                    }
                 }else{
                     response.getWriter().println("No such person in cache");
                 }
@@ -47,8 +53,13 @@ public class UpdateUserServlet extends HttpServlet {
                 Cache<Integer, User> idUserCache = (Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
                 Cache<String, Integer> idNameCache = (Cache<String, Integer>) getServletContext().getAttribute("idNameCache");
                 User user = idUserCache.get(userId,k->null);
+                boolean changedUserWasAdmin=user.getUsername().equals("admin");
                 if (user != null) {
                     String newUsername = request.getParameter("username");
+                    if (Objects.equals(newUsername, "admin") && AdminUtils.adminExists(getServletContext()) && !changedUserWasAdmin){
+                        response.getWriter().println("Admin already exists");
+                        return;
+                    }
                     String newPassword = request.getParameter("password");
                     String newEmail = request.getParameter("email");
                     idNameCache.invalidate(user.getUsername());
@@ -63,8 +74,10 @@ public class UpdateUserServlet extends HttpServlet {
                     }
                     idUserCache.put(userId,user);
                     idNameCache.put(user.getUsername(),userId);
-                    CookieUtils.deleteUserCookies(request,response);
-                    CookieUtils.saveObjectToCookie(user,24*60*60,"currentUser",response);
+                    if (!AdminUtils.isAdmin(request) || changedUserWasAdmin) {
+                        CookieUtils.deleteUserCookies(request, response);
+                        CookieUtils.saveObjectToCookie(user, 24 * 60 * 60, "currentUser", response);
+                    }
                     response.sendRedirect(request.getContextPath()+"/users?update=true");
                 }else{
                     response.getWriter().println("No such person in cache");
