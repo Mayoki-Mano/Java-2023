@@ -1,10 +1,10 @@
-package com.example.lab3;
+package com.example.lab3.utils;
 
+import com.example.lab3.structures.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public interface AdminUtils {
     static boolean isAdmin(HttpServletRequest request) throws JsonProcessingException {

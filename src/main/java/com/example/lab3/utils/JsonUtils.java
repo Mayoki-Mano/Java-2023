@@ -1,12 +1,9 @@
-package com.example.lab3;
+package com.example.lab3.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.Map;
-import java.util.Optional;
-
-public interface DAO  {
+public interface JsonUtils {
     static String objectToJson(Object obj) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(obj);

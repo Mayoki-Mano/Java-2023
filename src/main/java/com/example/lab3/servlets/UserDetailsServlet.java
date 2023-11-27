@@ -1,5 +1,8 @@
-package com.example.lab3;
+package com.example.lab3.servlets;
 
+import com.example.lab3.utils.AdminUtils;
+import com.example.lab3.utils.CookieUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -21,7 +24,6 @@ public class UserDetailsServlet extends HttpServlet {
         if (pathInfo != null && pathInfo.length() > 1) {
             // Извлечение числа из пути (за исключением первого символа '/')
             String numberString = pathInfo.substring(1);
-
             try {
                 // Преобразование числа из строки
                 int number = Integer.parseInt(numberString);
@@ -56,7 +58,6 @@ public class UserDetailsServlet extends HttpServlet {
         if (pathInfo != null && pathInfo.length() > 1) {
             // Извлечение числа из пути (за исключением первого символа '/')
             String numberString = pathInfo.substring(1);
-
             try {
                 // Преобразование числа из строки
                 int number = Integer.parseInt(numberString);

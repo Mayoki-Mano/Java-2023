@@ -1,4 +1,4 @@
-package com.example.lab3;
+package com.example.lab3.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.Cookie;
@@ -7,7 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 
 public interface CookieUtils {
     static void saveObjectToCookie(Object obj, int maxAgeInSeconds, String cookieName, HttpServletResponse response) throws JsonProcessingException {
-        String encodedJson = Base64.encodeBase64URLSafeString(DAO.objectToJson(obj).getBytes());
+        String encodedJson = Base64.encodeBase64URLSafeString(JsonUtils.objectToJson(obj).getBytes());
         Cookie cookie = new Cookie(cookieName, encodedJson);
         cookie.setPath("/");
         cookie.setMaxAge(maxAgeInSeconds); // Время жизни куки в секундах
@@ -22,7 +22,7 @@ public interface CookieUtils {
                     try {
                         // Декодирование значения куки из Base64 и преобразование в объект
                         String decodedJson = new String(Base64.decodeBase64(cookie.getValue()));
-                        return DAO.jsonToObject(decodedJson, valueType);
+                        return JsonUtils.jsonToObject(decodedJson, valueType);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -1,12 +1,11 @@
-package com.example.lab3;
+package com.example.lab3.servlets;
 
 import java.io.*;
 import java.util.Objects;
 
+import com.example.lab3.utils.CookieUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 @WebServlet(name = "LoginServlet", value = "/login")

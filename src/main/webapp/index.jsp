@@ -1,7 +1,5 @@
 <%@ page import="java.util.Date" %>
-<%@ page import="com.example.lab3.User" %>
-<%@ page import="com.example.lab3.CookieUtils" %>
-<%@ page import="com.example.lab3.AdminUtils" %>
+<%@ page import="com.example.lab3.utils.CookieUtils" %>
 <%@ page import="java.util.Objects" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
@@ -25,7 +23,6 @@
 <p><a href="registration">Registration Servlet</a></p>
 <p><a href="login">Login Servlet</a></p>
 <%
-    // Показываем ссылку "Users Servlet" только если у пользователя роль "admin"
     if (isAuthenticated) {
 %>
 <p><a href="users">Users Servlet</a></p>

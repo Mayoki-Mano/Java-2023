@@ -1,5 +1,7 @@
-package com.example.lab3;
+package com.example.lab3.filters;
 
+import com.example.lab3.utils.CookieUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
@@ -15,7 +17,6 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
-        // Инициализация фильтра (может быть пустой, если не требуется)
     }
 
     @Override
@@ -30,7 +31,6 @@ public class AuthenticationFilter implements Filter {
             User user=CookieUtils.getObjectFromCookie((HttpServletRequest) request,"currentUser",User.class);
             idUserCache.put(user.getId(),user);
             idNameCache.put(user.getUsername(),user.getId());
-            // Прошли аутентификацию, выполняем цепочку фильтров и сервлета
             chain.doFilter(request, response);
         } else {
             String servletPath = ((HttpServletRequest) request).getServletPath();
@@ -45,10 +45,5 @@ public class AuthenticationFilter implements Filter {
         }
     }
 
-
-    @Override
-    public void destroy() {
-        // Освобождение ресурсов, если необходимо
-    }
 }
 

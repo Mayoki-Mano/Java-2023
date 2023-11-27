@@ -1,4 +1,4 @@
-package com.example.lab3;
+package com.example.lab3.structures;
 
 import java.util.Objects;
 

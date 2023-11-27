@@ -1,4 +1,4 @@
-package com.example.lab3;
+package com.example.lab3.structures;
 
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -17,7 +17,4 @@ public class Lab3ContextListener implements ServletContextListener {
         servletContextEvent.getServletContext().setAttribute("idNameCache", idNameCache);
     }
 
-    @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
-    }
 }

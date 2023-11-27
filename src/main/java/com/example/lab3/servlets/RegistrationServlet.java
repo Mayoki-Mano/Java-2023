@@ -1,21 +1,21 @@
-package com.example.lab3;
+package com.example.lab3.servlets;
 
-import java.io.*;
-import java.util.Map;
-
+import com.example.lab3.utils.CookieUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
-import com.github.benmanes.caffeine.cache.Caffeine;
-import jakarta.servlet.ServletContext;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Map;
 
 @WebServlet(name = "RegistrationServlet", value = "/registration")
 public class RegistrationServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        // Отправка формы для ввода данных (если это необходимо)
         response.getWriter().println("<html><body>");
         response.getWriter().println("<form action=\"registration\" method=\"post\">");
         response.getWriter().println("Username: <input type=\"text\" name=\"username\"><br>");
@@ -37,7 +37,6 @@ public class RegistrationServlet extends HttpServlet {
             response.getWriter().println("UserCache Exception");
             return;
         }
-        // Получение параметров из POST-запроса
         String username = request.getParameter("username");
         if (username.equals("admin") && idNameCache.get("admin",k->null)!=null){
             response.getWriter().println("Admin already exists");

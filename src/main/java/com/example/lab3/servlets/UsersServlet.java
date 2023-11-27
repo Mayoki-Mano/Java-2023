@@ -1,7 +1,8 @@
-package com.example.lab3;
+package com.example.lab3.servlets;
 
+import com.example.lab3.utils.AdminUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,9 +41,4 @@ public class UsersServlet extends HttpServlet {
         out.println("</body></html>");
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-
-    }
 }

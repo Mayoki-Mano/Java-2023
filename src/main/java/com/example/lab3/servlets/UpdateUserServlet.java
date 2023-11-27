@@ -1,16 +1,16 @@
-package com.example.lab3;
+package com.example.lab3.servlets;
 
+import com.example.lab3.utils.AdminUtils;
+import com.example.lab3.utils.CookieUtils;
+import com.example.lab3.structures.User;
 import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Map;
 import java.util.Objects;
 
 @WebServlet(value = "/updateUser/*")
@@ -24,21 +24,21 @@ public class UpdateUserServlet extends HttpServlet {
             try {
                 int userId = Integer.parseInt(numberString);
                 Cache<Integer, User> idUserCache = (Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
-                User user = idUserCache.get(userId,k->null);
+                User user = idUserCache.get(userId, k -> null);
                 if (user != null) {
-                    User cookieUser=CookieUtils.getObjectFromCookie(request,"currentUser",User.class);
-                    if (Objects.equals(user,cookieUser) || Objects.equals(Objects.requireNonNull(cookieUser).getUsername(), "admin")){
+                    User cookieUser = CookieUtils.getObjectFromCookie(request, "currentUser", User.class);
+                    if (Objects.equals(user, cookieUser) || Objects.equals(Objects.requireNonNull(cookieUser).getUsername(), "admin")) {
                         displayUser(response.getWriter(), user, request);
-                    }else{
+                    } else {
                         response.getWriter().println("No permissions");
                     }
-                }else{
+                } else {
                     response.getWriter().println("No such person in cache");
                 }
             } catch (NumberFormatException e) {
                 response.getWriter().println("Invalid number format");
             }
-        }else {
+        } else {
             response.getWriter().println("Missing user number in the URL");
         }
     }
@@ -52,11 +52,11 @@ public class UpdateUserServlet extends HttpServlet {
                 int userId = Integer.parseInt(numberString);
                 Cache<Integer, User> idUserCache = (Cache<Integer, User>) getServletContext().getAttribute("idUserCache");
                 Cache<String, Integer> idNameCache = (Cache<String, Integer>) getServletContext().getAttribute("idNameCache");
-                User user = idUserCache.get(userId,k->null);
-                boolean changedUserWasAdmin=user.getUsername().equals("admin");
+                User user = idUserCache.get(userId, k -> null);
+                boolean changedUserWasAdmin = user.getUsername().equals("admin");
                 if (user != null) {
                     String newUsername = request.getParameter("username");
-                    if (Objects.equals(newUsername, "admin") && AdminUtils.adminExists(getServletContext()) && !changedUserWasAdmin){
+                    if (Objects.equals(newUsername, "admin") && AdminUtils.adminExists(getServletContext()) && !changedUserWasAdmin) {
                         response.getWriter().println("Admin already exists");
                         return;
                     }
@@ -72,20 +72,20 @@ public class UpdateUserServlet extends HttpServlet {
                     if (newEmail != null && !newEmail.isEmpty()) {
                         user.setEmail(newEmail);
                     }
-                    idUserCache.put(userId,user);
-                    idNameCache.put(user.getUsername(),userId);
+                    idUserCache.put(userId, user);
+                    idNameCache.put(user.getUsername(), userId);
                     if (!AdminUtils.isAdmin(request) || changedUserWasAdmin) {
                         CookieUtils.deleteUserCookies(request, response);
                         CookieUtils.saveObjectToCookie(user, 24 * 60 * 60, "currentUser", response);
                     }
-                    response.sendRedirect(request.getContextPath()+"/users?update=true");
-                }else{
+                    response.sendRedirect(request.getContextPath() + "/users?update=true");
+                } else {
                     response.getWriter().println("No such person in cache");
                 }
             } catch (NumberFormatException e) {
                 response.getWriter().println("Invalid number format");
             }
-        }else {
+        } else {
             response.getWriter().println("Missing user number in the URL");
         }
     }
@@ -96,7 +96,7 @@ public class UpdateUserServlet extends HttpServlet {
         writer.println("<p>ID: " + user.getId() + "</p>");
         writer.println("<p>Username: " + user.getUsername() + "</p>");
         writer.println("<p>Email: " + user.getEmail() + "</p>");
-        writer.println("<form action='"+request.getContextPath()+"/updateUser/" + user.getId() + "' method='post'>");
+        writer.println("<form action='" + request.getContextPath() + "/updateUser/" + user.getId() + "' method='post'>");
         writer.println("Update Username: <input type='text' name='username'><br>");
         writer.println("Update Password: <input type='password' name='password'><br>");
         writer.println("Update Email: <input type='text' name='email'><br>");
